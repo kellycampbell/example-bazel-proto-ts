@@ -1,0 +1,2 @@
+
+bazel run src/hello

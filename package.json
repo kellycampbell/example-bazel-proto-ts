@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "build": "bazel build //...",
+    "test": "ibazel test //..."
+  },
+  "devDependencies": {
+    "@bazel/bazel": "^0.23.2",
+    "@bazel/buildifier": "^0.22.0",
+    "@bazel/ibazel": "^0.9.1",
+    "@bazel/typescript": "^0.27.5",
+    "@types/node": "~11.11.3",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "google-protobuf": "^3.7.0"
+  }
+}

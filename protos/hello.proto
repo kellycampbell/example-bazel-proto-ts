@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package example.hello;
+
+import "google/protobuf/timestamp.proto";
+
+
+message HelloMessage {
+  string greeting = 1;
+  google.protobuf.Timestamp create_time = 2;
+}
+
