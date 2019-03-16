@@ -17,7 +17,7 @@ http_archive(
     strip_prefix = "protobuf-3.7.0",
     sha256 = "b50be32ea806bdb948c22595ba0742c75dc2f8799865def414cf27ea5706f2b7",
 )
-load("@//tools:protobuf_deps.bzl", "protobuf_deps")
+load("@//tools/protobuf:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
 http_archive(

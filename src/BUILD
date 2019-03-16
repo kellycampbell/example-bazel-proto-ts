@@ -9,6 +9,7 @@ ts_library(
     srcs = glob(["*.ts"]),
     deps = [
         "//protos:hello_proto_ts",
+        "//tools/protobuf:timestamp_proto_ts",
         "@npm//@types/node",
     ],
 )
