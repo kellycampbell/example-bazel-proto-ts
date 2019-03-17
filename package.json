@@ -8,6 +8,7 @@
     "@bazel/buildifier": "^0.22.0",
     "@bazel/ibazel": "^0.9.1",
     "@bazel/typescript": "^0.27.5",
+    "@types/google-protobuf": "^3.2.7",
     "@types/node": "~11.11.3",
     "typescript": "^3.3.3333"
   },

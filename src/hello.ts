@@ -1,6 +1,6 @@
 
-import {HelloMessage} from 'example_ts/protos/hello_pb';
-import { Timestamp } from 'example_ts/external/com_google_protobuf/google/protobuf/timestamp_pb';
+import { HelloMessage } from 'example_ts/protos/hello_pb';
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 
 
 var msg = new HelloMessage();
