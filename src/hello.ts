@@ -6,10 +6,9 @@ import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 var msg = new HelloMessage();
 msg.setGreeting("Hello");
 
-var now = Math.floor(new Date().getTime() / 1000);
 var ts = new Timestamp();
-ts.setSeconds(now);
+ts.fromDate(new Date());
 
 msg.setCreateTime(ts);
 
-console.log("msg = ", msg);
+console.log("msg = ", msg.toObject());
