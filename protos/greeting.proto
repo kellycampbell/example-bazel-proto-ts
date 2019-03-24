@@ -5,15 +5,7 @@ package example.hello;
 import "google/protobuf/timestamp.proto";
 
 
-message HelloMessage {
+message GreetingMessage {
   string greeting = 1;
   google.protobuf.Timestamp create_time = 2;
-}
-
-service HelloService {
-  rpc SayHello(HelloRequest) returns(HelloMessage);
-}
-
-message HelloRequest {
-  string name = 1;
 }

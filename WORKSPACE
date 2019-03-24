@@ -21,6 +21,16 @@ load("@//tools/protobuf:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
 http_archive(
+    name = "com_github_grpc_grpc",
+    url = "https://github.com/grpc/grpc/archive/v1.19.1.zip",
+    strip_prefix = "grpc-1.19.1",
+    sha256 = "1efc6ee83ea0f1205a6f7b30db2bb1463fbe00016563ffa9e944d32b612197cb",
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
+com_github_grpc_grpc_bazel_grpc_deps()
+
+http_archive(
     name = "build_bazel_rules_nodejs",
     url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.5/rules_nodejs-0.27.5.tar.gz",
     sha256 = "02506a501974b6803e9756a4e655f2e1e79d2eafa474154e83b07289f3abab0d",
@@ -58,11 +68,21 @@ ts_setup_workspace()
 
 http_archive(
     name = "ts_protoc_gen",
-    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/220baabe13730e672ac6b9316bbf7464a1af2b9c.zip",
-    strip_prefix = "ts-protoc-gen-220baabe13730e672ac6b9316bbf7464a1af2b9c",
-    sha256 = "1291a1eed5bc63476678d82b25ce200f4485beb915fc0baeb1fe10598e6a07af",
+    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/0c2c88f14cbca39bd95199fe1e043241e9f715dc.zip",
+    strip_prefix = "ts-protoc-gen-0c2c88f14cbca39bd95199fe1e043241e9f715dc",
+    sha256 = "ab796dca4b3df5a86399d8c1335b0824f5108b2d2edb782ea0a93c3a125aa40c",
 )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
 typescript_proto_dependencies()
 
+# ========= python ===========
+http_archive(
+    name = "io_bazel_rules_python",
+    url = "https://github.com/bazelbuild/rules_python/archive/965d4b4a63e6462204ae671d7c3f02b25da37941.zip",
+    strip_prefix = "rules_python-965d4b4a63e6462204ae671d7c3f02b25da37941",
+    sha256 = "dd17de3dcb1a4149604c21a41f0fa0969bd5882189a6350298830d5110600762",
+)
+
+load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories")
+pip_repositories()

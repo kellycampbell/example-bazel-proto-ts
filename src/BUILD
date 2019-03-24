@@ -20,6 +20,5 @@ nodejs_binary(
         ":hello_ts",
         "@npm//google-protobuf",
     ],
-    # node_modules = "@npm//:node_modules",
     entry_point = "example_ts/src/hello.js",
 )
