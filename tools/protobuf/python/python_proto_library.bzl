@@ -26,7 +26,9 @@ def proto_path(proto):
     return path
 
 def append_to_outputs(ctx, src, file_name, py_outputs):
-    generated_filenames = ["_pb2.py", "_pb2_grpc.py"]
+    generated_filenames = ["_pb2.py"]
+    if ctx.attr.grpc == "true":
+        generated_filenames.append("_pb2_grpc.py")
 
     for f in generated_filenames:
         output = ctx.actions.declare_file(file_name + f, sibling=src)
@@ -55,7 +57,8 @@ def python_proto_library_aspect_(target, ctx):
 
     outputs = py_outputs
 
-    inputs += ctx.files._grpc_python_plugin
+    if ctx.attr.grpc == "true":
+        inputs += ctx.files._grpc_python_plugin
 
     inputs += target.proto.direct_sources
     inputs += target.proto.transitive_descriptor_sets
@@ -72,9 +75,10 @@ def python_proto_library_aspect_(target, ctx):
 
     protoc_command = "%s" % (ctx.file._protoc.path)
 
-    protoc_command += " --plugin=protoc-gen-grpc_python=%s" % (ctx.files._grpc_python_plugin[0].path)
+    if ctx.attr.grpc == "true":
+        protoc_command += " --plugin=protoc-gen-grpc_python=%s" % (ctx.files._grpc_python_plugin[0].path)
+        protoc_command += " --grpc_python_out=%s" % (protoc_output_dir)
     protoc_command += " --python_out=%s" % (protoc_output_dir)
-    protoc_command += " --grpc_python_out=%s" % (protoc_output_dir)
     protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
     protoc_command += " %s" % (" ".join(proto_inputs))
 
@@ -104,6 +108,7 @@ python_proto_library_aspect = aspect(
     implementation = python_proto_library_aspect_,
     attr_aspects = ["deps"],
     attrs = {
+        "grpc": attr.string(values = ["true", "false"], default = "false"),
         "_grpc_python_plugin": attr.label(
             allow_files = True,
             executable = True,
@@ -139,6 +144,20 @@ def _python_proto_library_impl(ctx):
         ],
     )
 
+python_proto_compile = rule(
+    attrs = {
+        "proto": attr.label(
+            mandatory = True,
+            allow_files = True,
+            single_file = True,
+            providers = ["proto"],
+            aspects = [python_proto_library_aspect],
+        ),
+        "grpc": attr.string(values = ["true", "false"], default = "false"),
+    },
+    implementation = _python_proto_library_impl,
+)
+
 python_grpc_compile = rule(
     attrs = {
         "proto": attr.label(
@@ -148,22 +167,29 @@ python_grpc_compile = rule(
             providers = ["proto"],
             aspects = [python_proto_library_aspect],
         ),
-        "_grpc_python_plugin": attr.label(
-            allow_files = True,
-            executable = True,
-            cfg = "host",
-            default = Label("@com_github_grpc_grpc//:grpc_python_plugin"),
-        ),
-        "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
-            executable = True,
-            cfg = "host",
-            default = Label("@com_google_protobuf//:protoc"),
-        ),
+        "grpc": attr.string(values = ["true", "false"], default = "true"),
     },
     implementation = _python_proto_library_impl,
 )
+
+def python_proto_library(**kwargs):
+    name = kwargs.get("name")
+    deps = kwargs.get("deps", [])
+    proto = kwargs.get("proto")
+
+    name_pb = name + "_pb"
+    python_proto_compile(
+        name = name_pb,
+        proto = proto,
+    )
+
+    native.py_library(
+        name = name,
+        srcs = [name_pb],
+        deps = depset(deps + [protobuf_py_requirement("protobuf")]).to_list(),
+        # This magically adds REPOSITORY_NAME/PACKAGE_NAME/{name_pb} to PYTHONPATH
+        imports = [name_pb],
+    )
 
 def python_grpc_library(**kwargs):
     name = kwargs.get("name")
