@@ -1,3 +1,4 @@
+load("@protobuf_py_deps//:requirements.bzl", protobuf_py_requirement = "requirement")
 
 PythonProtoLibraryAspect = provider(
     fields = {
@@ -71,7 +72,6 @@ def python_proto_library_aspect_(target, ctx):
 
     protoc_command = "%s" % (ctx.file._protoc.path)
 
-    print("ctx.files._grpc_python_plugin = %r" % (ctx.files._grpc_python_plugin,))
     protoc_command += " --plugin=protoc-gen-grpc_python=%s" % (ctx.files._grpc_python_plugin[0].path)
     protoc_command += " --python_out=%s" % (protoc_output_dir)
     protoc_command += " --grpc_python_out=%s" % (protoc_output_dir)
@@ -139,7 +139,7 @@ def _python_proto_library_impl(ctx):
         ],
     )
 
-python_proto_library = rule(
+python_grpc_compile = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
@@ -164,3 +164,23 @@ python_proto_library = rule(
     },
     implementation = _python_proto_library_impl,
 )
+
+def python_grpc_library(**kwargs):
+    name = kwargs.get("name")
+    deps = kwargs.get("deps", [])
+    proto = kwargs.get("proto")
+
+    name_pb = name + "_pb"
+    python_grpc_compile(
+        name = name_pb,
+        proto = proto,
+    )
+
+    native.py_library(
+        name = name,
+        srcs = [name_pb],
+        deps = depset(deps + [protobuf_py_requirement("protobuf"), protobuf_py_requirement("grpcio")]).to_list(),
+        # This magically adds REPOSITORY_NAME/PACKAGE_NAME/{name_pb} to PYTHONPATH
+        imports = [name_pb],
+    )
+

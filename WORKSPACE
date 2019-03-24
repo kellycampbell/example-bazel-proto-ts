@@ -32,8 +32,8 @@ com_github_grpc_grpc_bazel_grpc_deps()
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.5/rules_nodejs-0.27.5.tar.gz",
-    sha256 = "02506a501974b6803e9756a4e655f2e1e79d2eafa474154e83b07289f3abab0d",
+    url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.7/rules_nodejs-0.27.7.tar.gz",
+    sha256 = "fb87ed5965cef93188af9a7287511639403f4b0da418961ce6defb9dcf658f51",
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
@@ -81,8 +81,16 @@ http_archive(
     name = "io_bazel_rules_python",
     url = "https://github.com/bazelbuild/rules_python/archive/965d4b4a63e6462204ae671d7c3f02b25da37941.zip",
     strip_prefix = "rules_python-965d4b4a63e6462204ae671d7c3f02b25da37941",
-    sha256 = "dd17de3dcb1a4149604c21a41f0fa0969bd5882189a6350298830d5110600762",
+    sha256 = "dd17de3dcb1a4149604c21a41f0fa0969bd5882189a6350298830d5110600762", # HEAD as of 2019-03-23
 )
 
-load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories")
+load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
 pip_repositories()
+
+pip_import(
+    name = "protobuf_py_deps",
+    requirements = "//tools/protobuf/python:requirements.txt",
+)
+
+load("@protobuf_py_deps//:requirements.bzl", protobuf_py_install = "pip_install")
+protobuf_py_install()

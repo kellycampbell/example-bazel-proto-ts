@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
-load("//tools/protobuf:py_proto.bzl", "python_proto_library")
+load("//tools/protobuf/python:python_grpc_library.bzl", "python_grpc_library")
 
 
 proto_library(
@@ -21,7 +21,7 @@ typescript_proto_library(
     module = "commonjs",
 )
 
-python_proto_library(
+python_grpc_library(
     name = "hello_proto_py",
     proto = ":hello_proto",
 )

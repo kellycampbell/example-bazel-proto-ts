@@ -22,3 +22,14 @@ nodejs_binary(
     ],
     entry_point = "example_ts/src/hello.js",
 )
+
+load("@io_bazel_rules_python//python:python.bzl", "py_binary")
+
+py_binary(
+  name = "hello_py",
+  srcs = ["hello.py"],
+  main = "hello.py",
+  deps = [
+      "//protos:hello_proto_py",
+  ],
+)
