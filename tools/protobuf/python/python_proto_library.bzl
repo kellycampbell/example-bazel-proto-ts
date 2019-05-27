@@ -7,6 +7,7 @@ PythonProtoLibraryAspect = provider(
     },
 )
 
+
 def proto_path(proto):
     """
     The proto path is not really a file path
@@ -25,6 +26,7 @@ def proto_path(proto):
         path = path[1:]
     return path
 
+
 def append_to_outputs(ctx, src, file_name, py_outputs):
     generated_filenames = ["_pb2.py"]
     if ctx.attr.grpc == "true":
@@ -32,6 +34,7 @@ def append_to_outputs(ctx, src, file_name, py_outputs):
 
     for f in generated_filenames:
         output = ctx.actions.declare_file(file_name + f, sibling=src)
+        # print("src = %s declare output: %s" % (src, output))
         py_outputs.append(output)
 
 
@@ -69,6 +72,7 @@ def python_proto_library_aspect_(target, ctx):
     if len(parts) > 1 and parts[0] == 'external':
         build_dir = "/" + "/".join(parts[:-1])
     else:
+        # build_dir = "/" + "/".join(parts[:-1])
         build_dir = ""
 
     protoc_output_dir = ctx.bin_dir.path + build_dir
@@ -82,7 +86,7 @@ def python_proto_library_aspect_(target, ctx):
     protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
     protoc_command += " %s" % (" ".join(proto_inputs))
 
-    commands = [protoc_command]
+    commands = ["pwd", protoc_command]
 
     command = " && ".join(commands)
     ctx.actions.run_shell(
@@ -125,6 +129,7 @@ python_proto_library_aspect = aspect(
     },
 )
 
+
 def _python_proto_library_impl(ctx):
     """
     Handles converting the aspect output into a provider compatible with the rules_python rules.
@@ -153,7 +158,7 @@ python_proto_compile = rule(
             providers = ["proto"],
             aspects = [python_proto_library_aspect],
         ),
-        "grpc": attr.string(values = ["true", "false"], default = "false"),
+        "grpc": attr.string(values = ["true", "false"], default = "true"),
     },
     implementation = _python_proto_library_impl,
 )
@@ -171,6 +176,7 @@ python_grpc_compile = rule(
     },
     implementation = _python_proto_library_impl,
 )
+
 
 def python_proto_library(**kwargs):
     name = kwargs.get("name")
@@ -190,6 +196,7 @@ def python_proto_library(**kwargs):
         # This magically adds REPOSITORY_NAME/PACKAGE_NAME/{name_pb} to PYTHONPATH
         imports = [name_pb],
     )
+
 
 def python_grpc_library(**kwargs):
     name = kwargs.get("name")

@@ -4,7 +4,7 @@
     "test": "ibazel test //..."
   },
   "devDependencies": {
-    "@bazel/bazel": "^0.23.2",
+    "@bazel/bazel": "^0.25.3",
     "@bazel/buildifier": "^0.22.0",
     "@bazel/ibazel": "^0.9.1",
     "@bazel/typescript": "^0.27.5",

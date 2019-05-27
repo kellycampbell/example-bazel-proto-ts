@@ -26,7 +26,6 @@ python_grpc_library(
     proto = ":hello_proto",
 )
 
-
 python_proto_library(
     name = "hello_proto_py",
     proto = ":hello_proto",

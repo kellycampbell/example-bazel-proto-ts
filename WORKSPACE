@@ -2,48 +2,53 @@ workspace(name = "example_ts")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# bazel-skylb 0.8.0 released 2019.03.20 (https://github.com/bazelbuild/bazel-skylib/releases/tag/0.8.0)
+skylib_version = "0.8.0"
 http_archive(
     name = "bazel_skylib",
-    url = "https://github.com/bazelbuild/bazel-skylib/archive/0.7.0.tar.gz",
-    strip_prefix = "bazel-skylib-0.7.0",
-    sha256 = "2c62d8cd4ab1e65c08647eb4afe38f51591f43f7f0885e7769832fa137633dcb",
+    type = "tar.gz",
+    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{}/bazel-skylib.{}.tar.gz".format (skylib_version, skylib_version),
+    sha256 = "2ef429f5d7ce7111263289644d233707dba35e39696377ebab8b0bc701f7818e",
 )
 
 # This com_google_protobuf repository is required for proto_library rule.
 # It provides the protocol compiler binary (i.e., protoc).
+protobuf_version = "3.7.1"
 http_archive(
     name = "com_google_protobuf",
-    url = "https://github.com/protocolbuffers/protobuf/archive/v3.7.0.zip",
-    strip_prefix = "protobuf-3.7.0",
-    sha256 = "b50be32ea806bdb948c22595ba0742c75dc2f8799865def414cf27ea5706f2b7",
+    url = "https://github.com/protocolbuffers/protobuf/archive/v{}.zip".format(protobuf_version),
+    strip_prefix = "protobuf-{}".format(protobuf_version),
+    sha256 = "f976a4cd3f1699b6d20c1e944ca1de6754777918320c719742e1674fcf247b7e",
 )
 load("@//tools/protobuf:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
+grpc_version = "1.21.1"
 http_archive(
     name = "com_github_grpc_grpc",
-    url = "https://github.com/grpc/grpc/archive/v1.19.1.zip",
-    strip_prefix = "grpc-1.19.1",
-    sha256 = "1efc6ee83ea0f1205a6f7b30db2bb1463fbe00016563ffa9e944d32b612197cb",
+    url = "https://github.com/grpc/grpc/archive/v{}.zip".format(grpc_version),
+    strip_prefix = "grpc-{}".format(grpc_version),
+    sha256 = "650189b5def24f671d18f64dde08b2a90fbf51470502af42a0da4ac2c34e9258",
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
 com_github_grpc_grpc_bazel_grpc_deps()
 
+rules_nodejs_version = "0.29.2"
 http_archive(
     name = "build_bazel_rules_nodejs",
-    url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.7/rules_nodejs-0.27.7.tar.gz",
-    sha256 = "fb87ed5965cef93188af9a7287511639403f4b0da418961ce6defb9dcf658f51",
+    url = "https://github.com/bazelbuild/rules_nodejs/releases/download/{}/rules_nodejs-{}.tar.gz".format(rules_nodejs_version, rules_nodejs_version),
+    sha256 = "395b7568f20822c13fc5abc65b1eced637446389181fda3a108fdd6ff2cac1e9",
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
 node_repositories(
     package_json = ["//:package.json"],
-    node_version = "11.12.0",
+    node_version = "11.15.0",
     node_repositories = {
-        "11.12.0-darwin_amd64": ("node-v11.12.0-darwin-x64.tar.gz", "node-v11.12.0-darwin-x64", "93d68c1af41d02b262b3383d69b46eb326707ec010b321ad5655b91c4956e783"),
-        "11.12.0-linux_amd64": ("node-v11.12.0-linux-x64.tar.xz", "node-v11.12.0-linux-x64", "1c6bb93a24eda832708c1c10ec20316e1e4f30b3cfca9c5ee5d446762414b116"),
-        "11.12.0-windows_amd64": ("node-v11.12.0-win-x64.zip", "node-v11.12.0-win-x64", "68e5bca1d6dd6b3de20870e7c593f9a890c48d2c9c83e15034baad6f7c0da426"),
+        "11.15.0-darwin_amd64": ("node-v11.15.0-darwin-x64.tar.gz", "node-v11.15.0-darwin-x64", "e953b657b1049e1de509a3fd0700cfeecd175f75a0d141d71393aa0d71fa29a9"),
+        "11.15.0-linux_amd64": ("node-v11.15.0-linux-x64.tar.xz", "node-v11.15.0-linux-x64", "17424aef198fa322b93c79217ce7e8cdd264fed40383abbbd3e63c305ce1d7d8"),
+        "11.15.0-windows_amd64": ("node-v11.15.0-win-x64.zip", "node-v11.15.0-win-x64", "f3cef50acf566724a5ec5df7697fb527d7339cafdae6c7c406a39358aee6cdf8"),
   },
   node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
 )
@@ -68,9 +73,9 @@ ts_setup_workspace()
 
 http_archive(
     name = "ts_protoc_gen",
-    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/0c2c88f14cbca39bd95199fe1e043241e9f715dc.zip",
-    strip_prefix = "ts-protoc-gen-0c2c88f14cbca39bd95199fe1e043241e9f715dc",
-    sha256 = "ab796dca4b3df5a86399d8c1335b0824f5108b2d2edb782ea0a93c3a125aa40c",
+    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/b1c78a6c34a92888bf3d1bd947a3468c11d4fb6a.zip",
+    strip_prefix = "ts-protoc-gen-b1c78a6c34a92888bf3d1bd947a3468c11d4fb6a",
+    sha256 = "a190adc282dddfedd930c3381ad7a662adae061a970a2ec2188c886d88aaa0c6",
 )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
