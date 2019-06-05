@@ -12,3 +12,5 @@ ts.fromDate(new Date());
 msg.setCreateTime(ts);
 
 console.log("msg = ", msg.toObject());
+console.log("foo");
+console.log("bar");

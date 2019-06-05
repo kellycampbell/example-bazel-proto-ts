@@ -1,0 +1,2 @@
+# Allow new "managed_repositories" flag to workspace
+build --experimental_allow_incremental_repository_updates

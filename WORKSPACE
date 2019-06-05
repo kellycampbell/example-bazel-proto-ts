@@ -1,4 +1,7 @@
-workspace(name = "example_ts")
+workspace(
+    name = "example_ts",
+    managed_directories = {"@npm": ["node_modules"]},
+)
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -34,21 +37,21 @@ http_archive(
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
 com_github_grpc_grpc_bazel_grpc_deps()
 
-rules_nodejs_version = "0.29.2"
+rules_nodejs_version = "0.30.2"
 http_archive(
     name = "build_bazel_rules_nodejs",
     url = "https://github.com/bazelbuild/rules_nodejs/releases/download/{}/rules_nodejs-{}.tar.gz".format(rules_nodejs_version, rules_nodejs_version),
-    sha256 = "395b7568f20822c13fc5abc65b1eced637446389181fda3a108fdd6ff2cac1e9",
+    sha256 = "bc180118b9e1c7f2b74dc76a8f798d706fe9fc53470ef9296728267b4cd29441",
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
 node_repositories(
     package_json = ["//:package.json"],
-    node_version = "11.15.0",
+    node_version = "12.3.1",
     node_repositories = {
-        "11.15.0-darwin_amd64": ("node-v11.15.0-darwin-x64.tar.gz", "node-v11.15.0-darwin-x64", "e953b657b1049e1de509a3fd0700cfeecd175f75a0d141d71393aa0d71fa29a9"),
-        "11.15.0-linux_amd64": ("node-v11.15.0-linux-x64.tar.xz", "node-v11.15.0-linux-x64", "17424aef198fa322b93c79217ce7e8cdd264fed40383abbbd3e63c305ce1d7d8"),
-        "11.15.0-windows_amd64": ("node-v11.15.0-win-x64.zip", "node-v11.15.0-win-x64", "f3cef50acf566724a5ec5df7697fb527d7339cafdae6c7c406a39358aee6cdf8"),
+        "12.3.1-darwin_amd64": ("node-v12.3.1-darwin-x64.tar.gz", "node-v12.3.1-darwin-x64", "b9c979f63a356090d8ff88ed141fd856ad853165c73633794a9d3a060334378e"),
+        "12.3.1-linux_amd64": ("node-v12.3.1-linux-x64.tar.xz", "node-v12.3.1-linux-x64", "46f52868c0643fe0d167ce24c3c873880c8e1494276c89c07114fb099da4f75a"),
+        "12.3.1-windows_amd64": ("node-v12.3.1-win-x64.zip", "node-v12.3.1-win-x64", "aac3c4543f846c7ebf63e1498dec7955119dffffe65722bd8c6d2124ed4ecbd7"),
   },
   node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
 )
@@ -73,9 +76,9 @@ ts_setup_workspace()
 
 http_archive(
     name = "ts_protoc_gen",
-    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/b1c78a6c34a92888bf3d1bd947a3468c11d4fb6a.zip",
-    strip_prefix = "ts-protoc-gen-b1c78a6c34a92888bf3d1bd947a3468c11d4fb6a",
-    sha256 = "a190adc282dddfedd930c3381ad7a662adae061a970a2ec2188c886d88aaa0c6",
+    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/42c962af166dc151ddba6cae1ec5d14f1f6e4cc6.zip",
+    strip_prefix = "ts-protoc-gen-42c962af166dc151ddba6cae1ec5d14f1f6e4cc6",
+    sha256 = "ed87689a72b222b0d6381cb4417c482318d2197b847b642e7b271bf690226bf6",
 )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
