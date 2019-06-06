@@ -1,5 +1,6 @@
 
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
+import { Foo } from 'example_ts/test/foo';
 import { HelloMessage } from 'example_ts/protos/hello_pb';
 
 
@@ -12,5 +13,9 @@ ts.fromDate(new Date());
 msg.setCreateTime(ts);
 
 console.log("msg = ", msg.toObject());
-console.log("foo");
+console.log("foo = ", new Foo());
 console.log("bar");
+
+new Foo().setBar(123);
+
+msg.foo = "123";

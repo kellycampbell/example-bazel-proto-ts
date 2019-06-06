@@ -21,11 +21,7 @@
     "allowUnreachableCode": false,
     "baseUrl": ".",
     "paths": {
-        "example_ts/*": [
-            "./*",
-            "bazel-genfiles/*",
-            "bazel-bin/*"
-        ]
+        "example_ts/*": ["*", "bazel-bin/*"]
     }
   }
 }

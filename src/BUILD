@@ -9,6 +9,7 @@ ts_library(
     srcs = glob(["*.ts"]),
     deps = [
         "//protos:hello_proto_ts",
+        "//test:foo",
         "@npm//@types/google-protobuf",
         "@npm//@types/node",
     ],
