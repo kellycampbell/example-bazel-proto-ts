@@ -120,8 +120,8 @@ python_proto_library_aspect = aspect(
             default = Label("@com_github_grpc_grpc//:grpc_python_plugin"),
         ),
         "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
+            # allow_files = True,
+            allow_single_file = True,
             executable = True,
             cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),
@@ -153,8 +153,8 @@ python_proto_compile = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
+            # allow_files = True,
+            allow_single_file = True,
             providers = ["proto"],
             aspects = [python_proto_library_aspect],
         ),
@@ -167,8 +167,8 @@ python_grpc_compile = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
+            # allow_files = True,
+            allow_single_file = True,
             providers = ["proto"],
             aspects = [python_proto_library_aspect],
         ),

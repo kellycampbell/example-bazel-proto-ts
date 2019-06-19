@@ -9,7 +9,8 @@ ts_library(
     srcs = glob(["*.ts"]),
     deps = [
         "//protos:hello_proto_ts",
-        "//test:foo",
+        # "//test:foo",
+        "@npm//google-protobuf",
         "@npm//@types/google-protobuf",
         "@npm//@types/node",
     ],
@@ -19,9 +20,8 @@ nodejs_binary(
     name = "hello",
     data = [
         ":hello_ts",
-        "@npm//google-protobuf",
     ],
-    entry_point = "example_ts/src/hello.js",
+    entry_point = ":hello.ts",
 )
 
 load("@io_bazel_rules_python//python:python.bzl", "py_binary")

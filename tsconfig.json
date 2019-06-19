@@ -23,5 +23,8 @@
     "paths": {
         "example_ts/*": ["*", "bazel-bin/*"]
     }
-  }
+  },
+  "exclude": [
+    "bazel-example-bazel-proto-ts"
+  ]
 }

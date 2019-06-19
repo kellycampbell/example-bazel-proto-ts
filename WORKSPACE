@@ -37,23 +37,27 @@ http_archive(
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
 com_github_grpc_grpc_bazel_grpc_deps()
 
-rules_nodejs_version = "0.30.2"
 http_archive(
     name = "build_bazel_rules_nodejs",
-    url = "https://github.com/bazelbuild/rules_nodejs/releases/download/{}/rules_nodejs-{}.tar.gz".format(rules_nodejs_version, rules_nodejs_version),
-    sha256 = "bc180118b9e1c7f2b74dc76a8f798d706fe9fc53470ef9296728267b4cd29441",
+    sha256 = "06cb04f4f745e37d542ec6883a2896029715a591c0e44c5d250a268d3752f865",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/0.32.0/rules_nodejs-0.32.0.tar.gz"],
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
 node_repositories(
     package_json = ["//:package.json"],
-    node_version = "12.3.1",
+    node_version = "12.4.0",
     node_repositories = {
-        "12.3.1-darwin_amd64": ("node-v12.3.1-darwin-x64.tar.gz", "node-v12.3.1-darwin-x64", "b9c979f63a356090d8ff88ed141fd856ad853165c73633794a9d3a060334378e"),
-        "12.3.1-linux_amd64": ("node-v12.3.1-linux-x64.tar.xz", "node-v12.3.1-linux-x64", "46f52868c0643fe0d167ce24c3c873880c8e1494276c89c07114fb099da4f75a"),
-        "12.3.1-windows_amd64": ("node-v12.3.1-win-x64.zip", "node-v12.3.1-win-x64", "aac3c4543f846c7ebf63e1498dec7955119dffffe65722bd8c6d2124ed4ecbd7"),
-  },
-  node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
+        "12.4.0-darwin_amd64": ("node-v12.4.0-darwin-x64.tar.gz", "node-v12.4.0-darwin-x64", "2457811f736d94ee33f94c6cc31cd5463ff526fc7f0d9bcc020c3c605c6077fd"),
+        "12.4.0-linux_amd64": ("node-v12.4.0-linux-x64.tar.xz", "node-v12.4.0-linux-x64", "9aec6a2a50c1791704a6069cbda6da62781361e44814d024e8bbaaf0deb41c5e"),
+        "12.4.0-windows_amd64": ("node-v12.4.0-win-x64.zip", "node-v12.4.0-win-x64", "ec8623e2528a35d3219200308e7ed41e24d4f7cd96530a4e6ac2513e44f7fad1"),
+    },
+    # node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
+    yarn_version = "1.16.0",
+    yarn_repositories = {
+        "1.13.0": ("yarn-v1.13.0.tar.gz", "yarn-v1.13.0", "125d40ebf621ebb08e3f66a618bd2cc5cd77fa317a312900a1ab4360ed38bf14"),
+        "1.16.0": ("yarn-v1.16.0.tar.gz", "yarn-v1.16.0", "df202627d9a70cf09ef2fb11cb298cb619db1b958590959d6f6e571b50656029"),
+    },
 )
 yarn_install(
     name = "npm",
@@ -69,17 +73,17 @@ load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
 ts_setup_workspace()
 
 
-# local_repository(
-#     name = "ts_protoc_gen",
-#     path = "/home/kellyc/Projects/thirdparty/bazel/ts-protoc-gen",
-# )
-
-http_archive(
+local_repository(
     name = "ts_protoc_gen",
-    url = "https://github.com/kellycampbell/ts-protoc-gen/archive/42c962af166dc151ddba6cae1ec5d14f1f6e4cc6.zip",
-    strip_prefix = "ts-protoc-gen-42c962af166dc151ddba6cae1ec5d14f1f6e4cc6",
-    sha256 = "ed87689a72b222b0d6381cb4417c482318d2197b847b642e7b271bf690226bf6",
+    path = "/home/kellyc/Projects/thirdparty/bazel/ts-protoc-gen",
 )
+
+# http_archive(
+#     name = "ts_protoc_gen",
+#     url = "https://github.com/kellycampbell/ts-protoc-gen/archive/42c962af166dc151ddba6cae1ec5d14f1f6e4cc6.zip",
+#     strip_prefix = "ts-protoc-gen-42c962af166dc151ddba6cae1ec5d14f1f6e4cc6",
+#     sha256 = "ed87689a72b222b0d6381cb4417c482318d2197b847b642e7b271bf690226bf6",
+# )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
 typescript_proto_dependencies()

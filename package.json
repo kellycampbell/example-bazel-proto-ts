@@ -4,15 +4,16 @@
     "test": "ibazel test //..."
   },
   "devDependencies": {
-    "@bazel/bazel": "^0.26.0",
+    "@bazel/bazel": "0.27.0",
     "@bazel/buildifier": "^0.22.0",
     "@bazel/ibazel": "^0.9.1",
-    "@bazel/jasmine": "^0.30.2",
-    "@bazel/karma": "^0.30.2",
-    "@bazel/typescript": "^0.30.2",
+    "@bazel/hide-bazel-files": "0.32.0",
+    "@bazel/jasmine": "0.32.0",
+    "@bazel/karma": "0.32.0",
+    "@bazel/typescript": "0.32.0",
     "@types/google-protobuf": "^3.2.7",
     "@types/node": "~11.11.3",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.2"
   },
   "dependencies": {
     "google-protobuf": "^3.7.0"
