@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eu
+
+BAZELISK_VERSION=0.0.8
+BAZELISK_DIR="$(dirname "${BASH_SOURCE[0]}")/bazelisk"
+
+export BAZELISK_SKIP_WRAPPER=true
+
+if [ "$(uname -s)" == "Darwin" ]; then
+    BAZELISK="${BAZELISK_DIR}/bazelisk-${BAZELISK_VERSION}-darwin-amd64"
+elif [ "$(uname -s)" == "Linux" ]; then
+    BAZELISK="${BAZELISK_DIR}/bazelisk-${BAZELISK_VERSION}-linux-amd64"
+fi
+
+exec -a "$0" "${BAZELISK}" "$@"
